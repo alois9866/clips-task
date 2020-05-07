@@ -1,13 +1,13 @@
 (deftemplate framework
-  (slot name (type SYMBOL) (default ?NONE))
+  (slot name     (type STRING) (default ?NONE))
   (slot language (type SYMBOL) (default ?NONE))
-  (slot type (type SYMBOL) (default ?NONE))
+  (slot type     (type SYMBOL) (default ?NONE))
 
   ; 1 - very fast or not applicable
   ; 2 - fast
   ; 3 - medium
   ; 4 - slow
-  (slot speed (type INTEGER) (default ?NONE))
+  (slot speed      (type INTEGER) (default ?NONE))
   (slot start-time (type INTEGER) (default ?NONE))
 
   ; 1 - excellent
@@ -17,22 +17,16 @@
 
   ; Possible values: true, false
   (slot has-green-threads (type SYMBOL) (default false))
-  (slot active (type SYMBOL) (default false))
+  (slot active            (type SYMBOL) (default false))
 
   ; https://www.tiobe.com/tiobe-index/
   (slot tiobe-index (type INTEGER) (default ?NONE))
 )
 
 (deffacts startup "facts"
-  ; -------------- Languages --------------
-  (language Java)
-  (language Python)
-  (language C#)
-  (language JavaScript)
-  (language Go)
 
   ; -------------- Java frameworks --------------
-  (framework (name Spring)
+  (framework (name "Spring")
     (language Java)
     (tiobe-index 2)
 
@@ -46,7 +40,7 @@
     (docs-quality 1)
     (active true)
   )
-  (framework (name JHipster)
+  (framework (name "JHipster")
     (language Java)
     (tiobe-index 2)
 
@@ -60,7 +54,7 @@
     (docs-quality 1)
     (active true)
   )
-  (framework (name Struts)
+  (framework (name "Apache Struts")
     (language Java)
     (tiobe-index 2)
 
@@ -74,7 +68,7 @@
     (docs-quality 2)
     (active true)
   )
-  (framework (name Akka)
+  (framework (name "Play Akka")
     (language Java)
     (tiobe-index 2)
 
@@ -88,7 +82,7 @@
     (docs-quality 1)
     (active true)
   )
-  (framework (name JSF)
+  (framework (name "JSF")
     (language Java)
     (tiobe-index 2)
 
@@ -102,7 +96,7 @@
     (docs-quality 2)
     (active true)
   )
-  (framework (name GWT)
+  (framework (name "GWT")
     (language Java)
     (tiobe-index 2)
 
@@ -116,7 +110,7 @@
     (docs-quality 3)
     (active true)
   )
-  (framework (name Vaadin)
+  (framework (name "Vaadin")
     (language Java)
     (tiobe-index 2)
 
@@ -132,7 +126,7 @@
   )
 
   ; -------------- Python frameworks --------------
-  (framework (name Django)
+  (framework (name "Django")
     (language Python)
     (tiobe-index 3)
 
@@ -146,7 +140,7 @@
     (docs-quality 2)
     (active true)
   )
-  (framework (name Flask)
+  (framework (name "Flask")
     (language Python)
     (tiobe-index 3)
 
@@ -160,7 +154,7 @@
     (docs-quality 3)
     (active true)
   )
-  (framework (name Pyramid)
+  (framework (name "Pyramid")
     (language Python)
     (tiobe-index 3)
 
@@ -174,7 +168,7 @@
     (docs-quality 2)
     (active true)
   )
-  (framework (name Web2Py)
+  (framework (name "Web2Py")
     (language Python)
     (tiobe-index 3)
 
@@ -188,7 +182,7 @@
     (docs-quality 2)
     (active true)
   )
-  (framework (name Bottle)
+  (framework (name "Bottle")
     (language Python)
     (tiobe-index 3)
 
@@ -204,7 +198,7 @@
   )
 
   ; -------------- C# frameworks --------------
-  (framework (name ASPNET)
+  (framework (name "ASP.NET")
     (language C#)
     (tiobe-index 5)
 
@@ -218,7 +212,7 @@
     (docs-quality 1)
     (active true)
   )
-  (framework (name Blazor)
+  (framework (name "Blazor")
     (language C#)
     (tiobe-index 5)
 
@@ -234,7 +228,7 @@
   )
 
   ; -------------- JavaScript frameworks --------------
-  (framework (name ExpressJS)
+  (framework (name "Express.js")
     (language JavaScript)
     (tiobe-index 7)
 
@@ -248,7 +242,7 @@
     (docs-quality 1)
     (active true)
   )
-  (framework (name SocketIO)
+  (framework (name "Socket.io")
     (language JavaScript)
     (tiobe-index 7)
 
@@ -262,7 +256,7 @@
     (docs-quality 1)
     (active true)
   )
-  (framework (name MeteorJS)
+  (framework (name "Meteor.js")
     (language JavaScript)
     (tiobe-index 7)
 
@@ -276,7 +270,7 @@
     (docs-quality 2)
     (active true)
   )
-  (framework (name FeathersJS)
+  (framework (name "Feathers.js")
     (language JavaScript)
     (tiobe-index 7)
 
@@ -290,7 +284,7 @@
     (docs-quality 2)
     (active true)
   )
-  (framework (name AngularJS)
+  (framework (name "Angular")
     (language JavaScript)
     (tiobe-index 7)
 
@@ -304,7 +298,7 @@
     (docs-quality 1)
     (active true)
   )
-  (framework (name ReactJS)
+  (framework (name "React.js")
     (language JavaScript)
     (tiobe-index 7)
 
@@ -318,7 +312,7 @@
     (docs-quality 1)
     (active true)
   )
-  (framework (name VueJS)
+  (framework (name "Vue.js")
     (language JavaScript)
     (tiobe-index 7)
 
@@ -334,7 +328,7 @@
   )
 
   ; -------------- Go frameworks --------------
-  (framework (name nethttp)
+  (framework (name "net.http")
     (language Go)
     (tiobe-index 12)
 
@@ -348,7 +342,7 @@
     (docs-quality 3)
     (active true)
   )
-  (framework (name fasthttp)
+  (framework (name "fast http")
     (language Go)
     (tiobe-index 12)
 
@@ -362,7 +356,7 @@
     (docs-quality 2)
     (active true)
   )
-  (framework (name Gin-gonic)
+  (framework (name "Gin-gonic")
     (language Go)
     (tiobe-index 12)
 
@@ -376,7 +370,7 @@
     (docs-quality 2)
     (active true)
   )
-  (framework (name Revel)
+  (framework (name "Revel")
     (language Go)
     (tiobe-index 12)
 
@@ -390,7 +384,7 @@
     (docs-quality 2)
     (active true)
   )
-  (framework (name Echo)
+  (framework (name "Echo")
     (language Go)
     (tiobe-index 12)
 
@@ -404,7 +398,7 @@
     (docs-quality 2)
     (active true)
   )
-  (framework (name Buffalo)
+  (framework (name "Buffalo")
     (language Go)
     (tiobe-index 12)
 

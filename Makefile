@@ -3,7 +3,7 @@
 all: run
 
 run:
-	clips -f2 rules.clp -f2 exit.clp
+	clips -f2 run.clp -f2 exit.clp
 
 start:
-	clips -f2 rules.clp
+	clips -f2 run.clp
