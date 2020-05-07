@@ -5,5 +5,3 @@
 (facts)
 
 (list-defrules)
-
-(exit)
