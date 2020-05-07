@@ -88,7 +88,7 @@ JSF          - Java       - client     - no    - medium   - N/A    - 2     - y  
 GWT          - Java       - client     - no    - medium   - N/A    - 2     - n    - 2     -
 Vaadin       - Java       - client     - no    - slow     - N/A    - 1     - y    - 2     -
 Django       - Python     - full stack - no    - medium   - medium - 1     - y    - 3     -
-Flask        - Python     - server     - no    - mediu    - fast   - 3     - y    - 3     -
+Flask        - Python     - server     - no    - medium   - fast   - 3     - y    - 3     -
 Pyramid      - Python     - full stack - no    - fast     - fast   - 2     - y    - 3     -
 Web2Py       - Python     - server     - no    - medium   - fast   - 2     - n    - 3     -
 Bottle       - Python     - server     - yes   - fast     - fast   - 2     - y    - 3     -
