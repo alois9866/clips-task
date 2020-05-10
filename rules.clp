@@ -190,7 +190,7 @@
     (println "[Request handling speed not chosen.]")
     (modify ?speed-ref (val ""))
   else
-    (println "pRequest handling speed chosen:" (str-cat ?answer "]"))
+    (println "[Request handling speed chosen:" (str-cat ?answer "]"))
     (modify ?speed-ref (val ?answer))
   )
 

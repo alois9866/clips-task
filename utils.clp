@@ -27,6 +27,7 @@
     (printout t "'" ?v "' ")
   )
   (println)
+  (print ">")
   (bind ?answer (readline))
     (if (lexemep ?answer) then
       (bind ?answer (lowcase ?answer))
@@ -37,6 +38,7 @@
         (printout t "'" ?v "' ")
       )
       (println)
+      (print ">")
       (bind ?answer (readline))
         (if (lexemep ?answer) then
           (bind ?answer (lowcase ?answer))

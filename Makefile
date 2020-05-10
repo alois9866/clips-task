@@ -2,7 +2,7 @@
 
 all: run
 
-try:
+debug:
 	clips -f2 main.clp
 
 run:
