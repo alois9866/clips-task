@@ -8,10 +8,10 @@
 
 (reset)
 
-(facts)
+;(facts)
 
 (load "rules.clp")
 
-(list-defrules)
+;(list-defrules)
 
 (instructions)

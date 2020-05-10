@@ -35,7 +35,7 @@
 
 (deffacts startup "facts"
   ; Trace logs.
-  (status (name trace) (val TRUE))
+  (status (name trace) (val FALSE))
 
   ; Exit conditions.
   (status (name unable-to-deduce))

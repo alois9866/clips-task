@@ -7,7 +7,7 @@
   ?actively-developed
   ?good-docs
 )
-  (println ?framework-type ?language ?need-green-threads ?speed ?start-time ?actively-developed ?good-docs)
+  ;(println ?framework-type ?language ?need-green-threads ?speed ?start-time ?actively-developed ?good-docs)
   (bind ?found (
     find-all-facts ((?f framework))
       (and
@@ -29,8 +29,14 @@
   )
 )
 
-(deffunction current-val (?name)
-  (fact-slot-value (fact-index (nth$ 1 (find-fact ((?f var)) (eqs ?name ?f:name)))) val)
+(defrule no-more (declare (salience -1000))
+  (status (name trace) (val ?trace))
+  (status (name unable-to-deduce) (val FALSE))
+  (status (name deduced) (val FALSE))
+=>
+  (trace ?trace no-more)
+
+  (println "No more questions, choose from appropriate frameworks!")
 )
 
 (defrule frameworks-found (declare (salience 5))
@@ -49,18 +55,10 @@
 =>
   (trace ?trace no-such-framework)
 
-  (bind ?framework-type (current-val framework-type))
-  (bind ?language (current-val language))
-  (bind ?need-green-threads (current-val need-green-threads))
-  (bind ?speed (current-val speed))
-  (bind ?start-time (current-val start-time))
-  (bind ?actively-developed (current-val actively-developed))
-  (bind ?good-docs (current-val good-docs))
-
   (bind ?found (find-framework ?framework-type ?language ?need-green-threads ?speed ?start-time ?actively-developed ?good-docs))
 
   (if (not ?found) then
-    (println "Unable to find a framework with parameters:")
+    (println "UNABLE TO FIND A FRAMEWORK WITH PARAMETERS:")
     (println "Type:                          " ?framework-type)
     (println "Language:                      " ?language)
     (println "Green threads needed:          " ?need-green-threads)
@@ -69,18 +67,24 @@
     (println "Actively developed:            " ?actively-developed)
     (println "With good documentation:       " ?good-docs)
     (modify ?unable-to-deduce-ref (val TRUE))
+
+    (if (yes-or-no "*** Try again?") then
+      (reset)
+      (run)
+    )
   else
-    (println "Found frameworks by parameters")
-    (println "Type:                          " ?framework-type)
-    (println "Language:                      " ?language)
-    (println "Green threads needed:          " ?need-green-threads)
-    (println "Minimal request handling speed:" ?speed)
-    (println "Minimal start time:            " ?start-time)
-    (println "Actively developed:            " ?actively-developed)
-    (println "With good documentation:       " ?good-docs)
+    ;(println "Found frameworks by parameters")
+    ;(println "Type:                          " ?framework-type)
+    ;(println "Language:                      " ?language)
+    ;(println "Green threads needed:          " ?need-green-threads)
+    ;(println "Minimal request handling speed:" ?speed)
+    ;(println "Minimal start time:            " ?start-time)
+    ;(println "Actively developed:            " ?actively-developed)
+    ;(println "With good documentation:       " ?good-docs)
+    (println "Appropriate frameworks:")
     (print-frameworks ?found)
 
-    (if (not (yes-or-no "Continue search?")) then
+    (if (or (= 1 (length ?found)) (not (yes-or-no "Continue search?"))) then
       (modify ?deduced-ref (val TRUE))
     )
   )
@@ -98,8 +102,8 @@
 =>
   (trace ?trace ask-framework-type)
 
-  (bind ?answer (ask-question "Choose framework type:" "full-stack" "server" "client"))
-  (println "Framework type chosen:" ?answer)
+  (bind ?answer (ask-question "*** Choose framework type:" "full-stack" "server" "client"))
+  (println "[Framework type chosen:" (str-cat ?answer "]"))
   (modify ?framework-type-ref (val ?answer))
   (modify ?framework-chosen-ref (val TRUE))
 
@@ -116,12 +120,12 @@
 =>
   (trace ?trace ask-language)
 
-  (bind ?answer (ask-question "Choose programming language:" "java" "python" "c#" "javascript" "go" "don't care" ""))
+  (bind ?answer (ask-question "*** Choose programming language:" "java" "python" "c#" "javascript" "go" "don't care" ""))
   (if (or (eqs ?answer "don't care") (eqs ?answer "")) then
-    (println "Language not chosen.")
+    (println "[Language not chosen.]")
     (modify ?language-ref (val "any"))
   else
-    (println "Language chosen:" ?answer)
+    (println "[Language chosen:" (str-cat ?answer "]"))
     (modify ?language-ref (val ?answer))
   )
 
@@ -141,10 +145,10 @@
   (trace ?trace ask-green-threads)
 
   (if (yes-or-no "Do you want to use green threads?") then
-    (println "Choosing among frameworks with green threads.")
+    (println "[Choosing among frameworks with green threads.]")
     (modify ?need-green-threads-ref (val "true"))
   else
-    (println "Choosing among all frameworks.")
+    (println "[Choosing among all frameworks.]")
     (modify ?need-green-threads-ref (val "false"))
   )
 
@@ -163,12 +167,12 @@
 =>
   (trace ?trace ask-speed)
 
-  (bind ?answer (ask-question "Choose minimal request handling speed:" "very fast" "fast" "medium" "slow" "don't care" ""))
+  (bind ?answer (ask-question "*** Choose minimal request handling speed:" "very fast" "fast" "medium" "slow" "don't care" ""))
   (if (or (eqs ?answer "don't care") (eqs ?answer "")) then
-    (println "Request handling speed not chosen.")
+    (println "[Request handling speed not chosen.]")
     (modify ?speed-ref (val ""))
   else
-    (println "Request handling speed chosen:" ?answer)
+    (println "pRequest handling speed chosen:" (str-cat ?answer "]"))
     (modify ?speed-ref (val ?answer))
   )
 
@@ -187,12 +191,12 @@
 =>
   (trace ?trace ask-start-time)
 
-  (bind ?answer (ask-question "Choose minimal start time speed:" "very fast" "fast" "medium" "slow" "don't care" ""))
+  (bind ?answer (ask-question "*** Choose minimal start time speed:" "very fast" "fast" "medium" "slow" "don't care" ""))
   (if (or (eqs ?answer "don't care") (eqs ?answer "")) then
-    (println "Start time speed not chosen.")
+    (println "[Start time speed not chosen.]")
     (modify ?start-time-ref (val ""))
   else
-    (println "Start time speed chosen:" ?answer)
+    (println "[Start time speed chosen:" (str-cat ?answer "]"))
     (modify ?start-time-ref (val ?answer))
   )
 
@@ -212,10 +216,10 @@
   (trace ?trace ask-actively-developed)
 
   (if (yes-or-no "Do you want an actively developed framework?") then
-    (println "Choosing among actively developed frameworks.")
+    (println "[Choosing among actively developed frameworks.]")
     (modify ?actively-developed-ref (val "true"))
   else
-    (println "Choosing among all frameworks.")
+    (println "[Choosing among all frameworks.]")
     (modify ?actively-developed-ref (val "false"))
   )
 
@@ -235,10 +239,10 @@
   (trace ?trace ask-docs-quality)
 
   (if (yes-or-no "Do you want a well documented framework?") then
-    (println "Choosing among frameworks with good documentation.")
+    (println "[Choosing among frameworks with good documentation.]")
     (modify ?good-docs-ref (val "okay"))
   else
-    (println "Choosing among all frameworks.")
+    (println "[Choosing among all frameworks.]")
     (modify ?good-docs-ref (val "don't care"))
   )
 

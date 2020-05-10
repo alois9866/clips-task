@@ -19,36 +19,24 @@
   (printout t crlf)
 )
 
-(deffunction print-frameworks (?fs)
-  (bind ?i 1)
-  (loop-for-count (length ?fs) do
-    (bind ?f (nth$ ?i ?fs))
-
-    (println (fact-slot-value ?f name)
-             ":"
-             (fact-slot-value ?f language)
-             (fact-slot-value ?f type)
-             (fact-slot-value ?f speed)
-             (fact-slot-value ?f start-time)
-             (fact-slot-value ?f has-green-threads)
-             (fact-slot-value ?f active)
-             (fact-slot-value ?f docs-quality)
-    )
-
-    (bind ?i (+ ?i 1))
-  )
-)
-
 (deffunction e () (exit))
 
 (deffunction ask-question (?question $?allowed-values)
-  (println ?question $?allowed-values)
+  (print ?question " ")
+  (foreach ?v ?allowed-values
+    (printout t "'" ?v "' ")
+  )
+  (println)
   (bind ?answer (readline))
     (if (lexemep ?answer) then
       (bind ?answer (lowcase ?answer))
     )
     (while (not (member ?answer ?allowed-values)) do
-      (println ?question ?allowed-values)
+      (print ?question " ")
+      (foreach ?v ?allowed-values
+        (printout t "'" ?v "' ")
+      )
+      (println)
       (bind ?answer (readline))
         (if (lexemep ?answer) then
           (bind ?answer (lowcase ?answer))
@@ -77,6 +65,15 @@
   )
 )
 
+(deffunction number-to-speed (?speed)
+  (switch ?speed
+    (case 1 then "very fast")
+    (case 2 then "fast")
+    (case 3 then "medium")
+    (case 4 then "slow")
+  )
+)
+
 (deffunction quality-to-number (?quality)
   (switch (lowcase ?quality)
     (case "excellent"  then 1)
@@ -87,16 +84,66 @@
   )
 )
 
-(deffunction string-to-bool (?quality)
-  (switch (lowcase ?quality)
+(deffunction number-to-quality (?quality)
+  (switch ?quality
+    (case 1 then "excellent")
+    (case 2 then "okay")
+    (case 3 then "poor")
+  )
+)
+
+(deffunction string-to-bool (?s)
+  (switch (lowcase ?s)
     (case "true"  then TRUE)
     (case "false" then FALSE)
     (case ""      then FALSE)
   )
 )
 
-(defmethod integer ((?s STRING))
-   (integer (string-to-field ?s))
+(deffunction bool-to-string (?t)
+  (switch ?t
+    (case TRUE  then "yes")
+    (case FALSE then "no")
+  )
+)
+
+(deffunction print-frameworks (?fs)
+  (if (> (length ?fs) 0) then
+    (println "| name                 | language   | type       | speed     | start time | green threads | active | documentation |")
+  )
+  (if (> (length ?fs) 1) then
+    (bind ?i 1)
+    (loop-for-count (length ?fs) do
+      (bind ?f (nth$ ?i ?fs))
+      (format t
+              "| %-20s | %-10s | %-10s | %-9s | %-10s | %-13s | %-6s | %-13s |%n"
+              (fact-slot-value   ?f name)
+              (fact-slot-value   ?f language)
+              (fact-slot-value   ?f type)
+              (number-to-speed   (fact-slot-value ?f speed))
+              (number-to-speed   (fact-slot-value ?f start-time))
+              (bool-to-string    (fact-slot-value ?f has-green-threads))
+              (bool-to-string    (fact-slot-value ?f active))
+              (number-to-quality (fact-slot-value ?f docs-quality))
+      )
+      (bind ?i (+ ?i 1))
+    )
+  else (if (= (length ?fs) 1) then
+          (bind ?f (nth$ 1 ?fs))
+          (format t
+                  "| %-20s | %-10s | %-10s | %-9s | %-10s | %-13s | %-6s | %-13s |%n"
+                  (fact-slot-value   ?f name)
+                  (fact-slot-value   ?f language)
+                  (fact-slot-value   ?f type)
+                  (number-to-speed   (fact-slot-value ?f speed))
+                  (number-to-speed   (fact-slot-value ?f start-time))
+                  (bool-to-string    (fact-slot-value ?f has-green-threads))
+                  (bool-to-string    (fact-slot-value ?f active))
+                  (number-to-quality (fact-slot-value ?f docs-quality))
+           )
+           (println "PERFECT MATCH!")
+       )
+  )
 )
 
 (deffunction trace (?status ?name)
