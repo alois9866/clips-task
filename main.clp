@@ -13,5 +13,3 @@
 (load "rules.clp")
 
 ;(list-defrules)
-
-(instructions)

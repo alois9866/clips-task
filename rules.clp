@@ -6,6 +6,7 @@
   ?start-time
   ?actively-developed
   ?good-docs
+  ?tiobe
 )
   ;(println ?framework-type ?language ?need-green-threads ?speed ?start-time ?actively-developed ?good-docs)
   (bind ?found (
@@ -25,7 +26,23 @@
   (if (= 0 (length ?found)) then
     FALSE
   else
-    ?found
+    (if ?tiobe then
+      (bind ?index 999)
+      (foreach ?f ?found
+        (if (< (fact-slot-value ?f tiobe-index) ?index) then
+          (bind ?index (fact-slot-value ?f tiobe-index))
+        )
+      )
+      (bind ?res (create$))
+      (foreach ?f ?found
+        (if (= (fact-slot-value ?f tiobe-index) ?index) then
+          (bind ?res (create$ $?res ?f))
+        )
+      )
+      ?res
+    else
+      ?found
+    )
   )
 )
 
@@ -52,10 +69,11 @@
   (var (name start-time) (val ?start-time))
   (var (name actively-developed) (val ?actively-developed))
   (var (name good-docs) (val ?good-docs))
+  (status (name docs-chosen) (val ?docs-chosen))
 =>
   (trace ?trace no-such-framework)
 
-  (bind ?found (find-framework ?framework-type ?language ?need-green-threads ?speed ?start-time ?actively-developed ?good-docs))
+  (bind ?found (find-framework ?framework-type ?language ?need-green-threads ?speed ?start-time ?actively-developed ?good-docs ?docs-chosen))
 
   (if (not ?found) then
     (println "UNABLE TO FIND A FRAMEWORK WITH PARAMETERS:")
@@ -84,7 +102,7 @@
     (println "Appropriate frameworks:")
     (print-frameworks ?found)
 
-    (if (or (= 1 (length ?found)) (not (yes-or-no "Continue search?"))) then
+    (if (or (= 1 (length ?found)) ?docs-chosen (not (yes-or-no "Continue search?"))) then
       (modify ?deduced-ref (val TRUE))
     )
   )
@@ -249,13 +267,4 @@
   (modify ?docs-chosen-ref (val TRUE))
 
   (modify ?updated-ref (val TRUE))
-)
-
-(deffunction instructions ()
-  (println)
-  (println "========================================")
-  (println "How to use:")
-  (println "#TODO")
-  (println "========================================")
-  (println)
 )
